@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 
 defineProps<{ msg: string }>()
 
@@ -7,6 +7,7 @@ const TOKEN = '2200886806:AAH3u_h8aIikXiKbQxpnOUagEOYM559zBMg'
 const CHAT_ID = '5000765136'
 
 const messageId = ref<string | null>(null);
+const callbackQuery = ref<string | null>(null);
 
 // Simulate receiving data from the Telegram WebApp
 if (window.Telegram) {
@@ -58,11 +59,16 @@ function closeApp() {
     console.warn('Cannot close: Telegram WebApp not available')
   }
 }
+
+onMounted(() => {
+  window.Telegram.WebApp.callbackQuery = callbackQuery;
+})
 </script>
 
 <template>
 <!--  <h1>{{ msg }}</h1>-->
   <p>MessageId: {{messageId}}</p>
+  <p>MessageId: {{JSON.stringify(callbackQuery)}}</p>
   <div class="card">
     <button type="button" @click="collectOrder">Collect order</button>
 <!--    <p>-->
