@@ -19,7 +19,7 @@ const collectOrder = async () => {
     })
     window.Telegram.WebApp.close()
   } catch (error) {
-    alert(error?.message || 'Something went wrong');
+    alert(error || 'Something went wrong');
   }
 
   // Close the mini-app after action is complete
