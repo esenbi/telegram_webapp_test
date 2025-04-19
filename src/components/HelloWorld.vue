@@ -18,7 +18,7 @@ const CHAT_ID = '5000765136'
 const collectOrder = async () => {
   // const tg = window.Telegram.WebApp;
 
-  const URL = `http://localhost:3000/mark-done`;
+  const URL = `https://test-telegram-bot-enn4.onrender.com/mark-done`;
 
   const messageData = {
     chat_id: CHAT_ID, // Chat ID where the message was sent
