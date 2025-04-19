@@ -17,12 +17,11 @@ const collectOrder = async () => {
       body: JSON.stringify(messageData),
       headers: { 'Content-Type': 'application/json' },
     })
+    window.Telegram.WebApp.sendData(JSON.stringify(messageData))
     window.Telegram.WebApp.close()
   } catch (error) {
     alert(error || 'Something went wrong');
   }
-
-  // Close the mini-app after action is complete
 }
 </script>
 
