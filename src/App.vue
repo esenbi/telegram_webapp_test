@@ -6,16 +6,30 @@ const messageId = ref('')
 const orderId = ref('')
 const items = ref<string[]>([])
 
-onMounted(() => {
+onMounted(async () => {
   const params = new URLSearchParams(window.location.search)
   messageId.value = params.get('message_id') || ''
   orderId.value = params.get('order_id') || ''
-  const itemsRaw = params.get('items');
-  items.value = itemsRaw ? JSON.parse(itemsRaw) : [];
+
+  try {
+    const url = new URL('https://test-telegram-bot-enn4.onrender.com/items')
+    url.searchParams.append('order_id', orderId.value || '1')
+
+    const res = await fetch(url.toString(), {
+      method: 'GET',
+    })
+
+    const json = await res.json()
+    items.value = json.data.items
+  } catch (error) {
+    console.log(error)
+  }
 })
 
 onBeforeMount(() => {
-  window.Telegram.WebApp.requestFullscreen()
+  if (window.Telegram.WebApp.ready()) {
+    window.Telegram.WebApp.requestFullscreen()
+  }
 })
 
 </script>
