@@ -33,7 +33,7 @@ onMounted(() => {
       <li v-for="item in items" :key="item">{{ item }}</li>
     </ul>
   </div>
-  <HelloWorld messageId="16" orderId="ABC125" />
+  <HelloWorld :messageId="messageId" :orderId="orderId" />
 </template>
 
 <style scoped>
