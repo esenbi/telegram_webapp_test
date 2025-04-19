@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, onBeforeMount } from 'vue'
 import HelloWorld from './components/HelloWorld.vue'
 
 const messageId = ref('')
@@ -12,8 +12,12 @@ onMounted(() => {
   orderId.value = params.get('order_id') || ''
   const itemsRaw = params.get('items');
   items.value = itemsRaw ? JSON.parse(itemsRaw) : [];
+})
+
+onBeforeMount(() => {
   window.Telegram.WebApp.requestFullscreen()
 })
+
 </script>
 
 <template>
