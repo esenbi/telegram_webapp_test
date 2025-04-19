@@ -1,52 +1,36 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
 
-defineProps<{ msg: string }>()
+const props = defineProps({ messageId: String, orderId: String})
 
-const TOKEN = '2200886806:AAH3u_h8aIikXiKbQxpnOUagEOYM559zBMg'
 const CHAT_ID = '5000765136'
 
-const messageId = ref<string | null>(null);
-const callbackQuery = ref<string | null>(null);
+// const messageId = ref<string | null>(null);
+// const callbackQuery = ref<string | null>(null);
 
 // Simulate receiving data from the Telegram WebApp
-if (window.Telegram) {
-  window.Telegram.WebApp.onEvent('mainButtonClicked', () => {
-    // Here, you can send the message_id to the mini-app when the button is clicked
-    window.Telegram.WebApp.sendData({ messageId });
-  });
-}
+// if (window.Telegram) {
+//   window.Telegram.WebApp.onEvent('mainButtonClicked', () => {
+//     // Here, you can send the message_id to the mini-app when the button is clicked
+//     window.Telegram.WebApp.sendData({ messageId });
+//   });
+// }
 
 const collectOrder = async () => {
   // const tg = window.Telegram.WebApp;
 
-  const telegramUrl = `https://api.telegram.org/bot${TOKEN}/editMessageText`;
+  const URL = `http://localhost:3000/mark-done`;
 
   const messageData = {
     chat_id: CHAT_ID, // Chat ID where the message was sent
-    message_id: messageId.value, // Message ID of the original message
-    text: "Order collected!", // Updated text
+    message_id: props.messageId, // Message ID of the original message
+    order_id: props.orderId, // Updated text
   };
 
-  await fetch(telegramUrl, {
+  await fetch(URL, {
     method: 'POST',
     body: JSON.stringify(messageData),
     headers: { 'Content-Type': 'application/json' },
   })
-
-  const removeButtonData = {
-    chat_id: CHAT_ID, // Chat ID
-    message_id: messageId.value, // Original message ID
-    reply_markup: JSON.stringify({
-      inline_keyboard: [],
-    }),
-  };
-
-  await fetch(telegramUrl, {
-    method: 'POST',
-    body: JSON.stringify(removeButtonData),
-    headers: { 'Content-Type': 'application/json' },
-  });
 
   // Close the mini-app after action is complete
   closeApp()
@@ -60,15 +44,15 @@ function closeApp() {
   }
 }
 
-onMounted(() => {
-  window.Telegram.WebApp.callbackQuery = callbackQuery;
-})
+// onMounted(() => {
+//   window.Telegram.WebApp.callbackQuery = callbackQuery;
+// })
 </script>
 
 <template>
 <!--  <h1>{{ msg }}</h1>-->
-  <p>MessageId: {{messageId}}</p>
-  <p>MessageId: {{JSON.stringify(callbackQuery)}}</p>
+<!--  <p>MessageId: {{messageId}}</p>-->
+<!--  <p>callbackQuery: {{JSON.stringify(callbackQuery)}}</p>-->
   <div class="card">
     <button type="button" @click="collectOrder">Collect order</button>
 <!--    <p>-->
