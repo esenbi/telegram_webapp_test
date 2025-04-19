@@ -12,6 +12,7 @@ onMounted(() => {
   orderId.value = params.get('order_id') || ''
   const itemsRaw = params.get('items');
   items.value = itemsRaw ? JSON.parse(itemsRaw) : [];
+  window.Telegram.WebApp.requestFullscreen()
 })
 </script>
 
